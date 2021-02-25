@@ -55,7 +55,7 @@ const getComments = () => {
 
     for (const element of data) {
       const dateCreated = new Date(element.created_at);
-      const dateCreatedStr = dateCreated.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric' });
+      const dateCreatedStr = dateCreated.toLocaleString("default", { day: "numeric", month: "long", year: "numeric" });
 
       const comment = document.createElement("DIV");
       comment.className = "comment";
@@ -78,8 +78,8 @@ const getComments = () => {
 
 const clearErrors = () => {
   for (const index in inputRefs) {
-    inputRefs[index].classList.remove('error');
-    inputRefs[index].nextElementSibling.innerHTML = '';
+    inputRefs[index].classList.remove("error");
+    inputRefs[index].nextElementSibling.innerHTML = "";
   }
 }
 
@@ -87,7 +87,7 @@ const highlightErrors = (errors) => {
   for (const index in errors) {
     const errorMessage = errors[index];
     const field = document.getElementsByName(index)[0];
-    field.classList.add('error');
+    field.classList.add("error");
     field.nextElementSibling.innerHTML = errorMessage;
   }
 }
@@ -112,11 +112,11 @@ const addComment = (e) => {
       highlightErrors(data.errors);
     }
   }).catch((err) => {
-    guestbookCommentsRef.innerHTML = err;
+    guestbookCommentsRef.innerHTML = "Request kon niet worden voltooid! Staan de server instelling en de database goed?";
   });
 }
 
 // On Mount
-formRef.addEventListener('submit', addComment);
+formRef.addEventListener("submit", addComment);
 getComments();
 </script>
