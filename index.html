@@ -36,18 +36,21 @@
 </html>
 
 <script>
-// Make a ref
+// Refs
 const formRef = document.getElementById("guestbook-form");
+const guestbookCommentsRef = document.getElementById("guestbook-comments")
 const inputRefs = {
   name: document.getElementById("input-name"),
   email: document.getElementById("input-email"),
   comment: document.getElementById("input-comment"),
 };
 
+// Methods
 const getComments = () => {
   fetch("endpoint.php").then((response) => {
     return response.json();
   }).then((data) => {
+    // Use a fragment is faster than appending directly
     const fragment = new DocumentFragment();
 
     for (const element of data) {
@@ -66,9 +69,8 @@ const getComments = () => {
       fragment.appendChild(comment);
     }
 
-    const guestbookComments = document.getElementById("guestbook-comments");
-    guestbookComments.innerHTML = "";
-    guestbookComments.appendChild(fragment);
+    guestbookCommentsRef.innerHTML = "";
+    guestbookCommentsRef.appendChild(fragment);
   }).catch((err) => {
     console.log(err);
   });
@@ -91,10 +93,8 @@ const highlightErrors = (errors) => {
 }
 
 const addComment = (e) => {
-  // Prevent page reload
   e.preventDefault();
 
-  // Use browser validation
   if (!formRef.reportValidity()) {
     return;
   }
@@ -112,11 +112,11 @@ const addComment = (e) => {
       highlightErrors(data.errors);
     }
   }).catch((err) => {
-    const guestbookComments = document.getElementById("guestbook-comments");
-    guestbookComments.innerHTML = err;
+    guestbookCommentsRef.innerHTML = err;
   });
 }
 
+// On Mount
 formRef.addEventListener('submit', addComment);
 getComments();
 </script>
