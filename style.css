@@ -36,6 +36,7 @@ body {
 
 #guestbook-form input.error, #guestbook-form textarea.error {
 	border-color: red;
+	border-style: solid;
 	background: #FFE9E9 url("error-icon.png") no-repeat 98% center;
 	padding: 0 5px;
 }
