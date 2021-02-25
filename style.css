@@ -10,7 +10,8 @@ body {
 
 #guestbook-title {
 	padding: 42px 0;
-	margin-left: calc(25% - 44px);
+	font-size: 50px;
+	font-weight: bold;
 }
 
 /* Form */
@@ -54,6 +55,10 @@ body {
 }
 
 /* Comment Section */
+#guestbook-comments {
+	padding: 0 42px;
+}
+
 #guestbook-comments .comment {
 	display: grid;
 	grid-gap: 24px;
