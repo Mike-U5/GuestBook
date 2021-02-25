@@ -1,0 +1,93 @@
+body {
+	font-size: 18px;
+	font-family: Merriweather, serif;
+	margin: 0 42px;
+}
+
+.container {
+	margin: auto;
+}
+
+#guestbook-title {
+	padding: 42px 0;
+	margin-left: calc(25% - 44px);
+}
+
+/* Form */
+#guestbook-form {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 42px;
+	border: 2px solid black;
+	padding: 42px;
+}
+
+#guestbook-form input, #guestbook-form textarea  {
+	width: 100%;
+	font-size: 18px;
+	line-height: 39px;
+	margin: 10px 0;
+}
+
+#guestbook-form label {
+	font-size: 20px;
+}
+
+#guestbook-form input.error, #guestbook-form textarea.error {
+	border-color: red;
+	background: #FFE9E9 url("error-icon.png") no-repeat 98% center;
+	padding: 0 5px;
+}
+
+#guestbook-form label.error, #guestbook-form .error-hint {
+	color: red;
+}
+
+#guestbook-form button {
+	height: 52px;
+	width: 115px;
+	color: white;
+	background-color: black;
+	font-size: 20px;
+	border: none;
+	cursor: pointer;
+}
+
+/* Comment Section */
+#guestbook-comments .comment {
+	display: grid;
+	grid-gap: 24px;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	padding: 40px 0;
+	border-bottom: 2px solid black;
+}
+
+#guestbook-comments .comment strong {
+	font-size: 20px;
+	font-weight: 500;
+	font-style: italic;
+}
+
+#guestbook-comments .comment .comment-info {
+	text-align: right;
+	font-size: 15px;
+}
+
+/* Helpers */
+.col-2 {
+	grid-column: 1 / 3;
+}
+
+.col-4 {
+	grid-column: 1 / 5;
+}
+
+.col-6 {
+	grid-column: 1 / 7;
+}
+
+@media only screen and (max-width: 768px) {
+	.sm-col-2 {
+		grid-column: 1 / 3;
+	}
+}

@@ -1,0 +1,122 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Merriweather">
+</head>
+
+<body>
+    <section>
+        <h1 id="guestbook-title" class="container">Gastenboek</h1>
+
+        <form id="guestbook-form" class="container">
+            <div class="sm-col-2">
+                <label for="input-name">Naam</label>
+                <input id="input-name" name="name" type="text" maxlength="255">
+                <small class="error-hint"></small>
+            </div>
+            <div class="sm-col-2">
+                <label for="input-email">E-mailadres</label>
+                <input id="input-email" name="email" type="email" maxlength="380" />
+                <small class="error-hint"></small>
+            </div>
+            <div class="col-2">
+                <label for="input-comment">Bericht</label>
+                <textarea id="input-comment" name="comment" rows="4" maxlength="1000"></textarea>
+                <small class="error-hint"></small>
+            </div>
+
+            <div class="col-2">
+                <button id="guestbook-form-submit">Verstuur</button>
+            </div>
+        </form>
+
+        <div id="guestbook-comments" class="container"></div>
+    </section>
+</body>
+</html>
+
+<script>
+// Make a ref
+const formRef = document.getElementById("guestbook-form");
+const inputRefs = {
+  name: document.getElementById("input-name"),
+  email: document.getElementById("input-email"),
+  comment: document.getElementById("input-comment"),
+};
+
+const getComments = () => {
+  fetch("endpoint.php").then((response) => {
+    return response.json();
+  }).then((data) => {
+    const fragment = new DocumentFragment();
+
+    for (const element of data) {
+      const dateCreated = new Date(element.created_at);
+      const dateCreatedStr = dateCreated.toLocaleString('default', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      const comment = document.createElement("DIV");
+      comment.className = "comment";
+      comment.innerHTML = `
+		<strong class='col-4 sm-col-6'>${element.name}</strong>
+		<div class='comment-info sm-col-3'>${dateCreatedStr}</div>
+		<a class='comment-info sm-col-3' href='mailto:${element.email}' class='w-20'>Stuur e-mail</a>
+		<div class='col-6'>${element.comment}</div>
+	  `;
+
+      fragment.appendChild(comment);
+    }
+
+    const guestbookComments = document.getElementById("guestbook-comments");
+    guestbookComments.innerHTML = "";
+    guestbookComments.appendChild(fragment);
+  }).catch((err) => {
+    console.log(err);
+  });
+};
+
+const clearErrors = () => {
+  for (const index in inputRefs) {
+    inputRefs[index].classList.remove('error');
+    inputRefs[index].nextElementSibling.innerHTML = '';
+  }
+}
+
+const highlightErrors = (errors) => {
+  for (const index in errors) {
+    const errorMessage = errors[index];
+    const field = document.getElementsByName(index)[0];
+    field.classList.add('error');
+    field.nextElementSibling.innerHTML = errorMessage;
+  }
+}
+
+const addComment = (e) => {
+  // Prevent page reload
+  e.preventDefault();
+
+  // Use browser validation
+  if (!formRef.reportValidity()) {
+    return;
+  }
+
+  const formData = new FormData(formRef);
+
+  fetch("endpoint.php", { method: "POST", body: formData }).then((response) => {
+    return response.json();
+  }).then((data) => {
+    clearErrors();
+
+    if (data.success) {
+      getComments();
+    } else {
+      highlightErrors(data.errors);
+    }
+  }).catch((err) => {
+    const guestbookComments = document.getElementById("guestbook-comments");
+    guestbookComments.innerHTML = err;
+  });
+}
+
+formRef.addEventListener('submit', addComment);
+getComments();
+</script>
